@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~ngx-toastr/toastr';
+//@import '~ngx-toastr/toastr-bs4-alert';
+
+@import "assets/scss/variables";
+@import "assets/scss/buttons";
+@import "assets/scss/stepper";
+@import "assets/scss/theme";
+
+
+@import '~@angular/material/theming';
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
+@include mat-core();
+
+$cliente-primary: mat-palette($mat-indigo, 700);
+// $cliente-light-primary: mat-palette($mat-purple, 400);
+$cliente-accent: mat-palette($mat-blue-gray, 600);
+
+// The warn palette is optional (defaults to red).
+$cliente-warn: mat-palette($mat-red, A700);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$cliente-theme: mat-light-theme($cliente-primary, $cliente-accent, $cliente-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($cliente-theme);
+

@@ -1,0 +1,9 @@
+<div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="authState.error !== null">
+  <strong>Error!</strong> {{ authState.message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<ngx-spinner>
+  <h3 class="text-center text-white-50" *ngIf="authState.message !== null">
+    {{ authState.message }}
+  </h3>
+</ngx-spinner>
