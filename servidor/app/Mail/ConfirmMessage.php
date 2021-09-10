@@ -34,7 +34,7 @@ class ConfirmMessage extends Mailable
     public function build()
     {
         return $this->markdown('emails.confirmation-code')->with([
-            'nombre' => $this->usuario->nombres,
+            'nombre' => $this->usuario->nombre_usuario,
             'url' => $this->base . '/activate-acount/' . $this->usuario->confirmation_code
         ]);
     }

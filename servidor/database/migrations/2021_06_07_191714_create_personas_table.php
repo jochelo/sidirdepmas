@@ -23,7 +23,7 @@ class CreatePersonasTable extends Migration
             $table->string('carnet')->nullable();
             $table->string('expedicion_carnet')->nullable();
             $table->string('extension_carnet')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('imgcian')->nullable();
             $table->string('imgcirev')->nullable();
             $table->softDeletes();

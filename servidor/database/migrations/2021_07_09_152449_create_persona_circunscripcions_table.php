@@ -17,7 +17,8 @@ class CreatePersonaCircunscripcionsTable extends Migration
             $table->id();
             $table->date('fecha_inicial')->nullable();
             $table->date('fecha_final')->nullable();
-            $table->date('direccion')->nullable();
+            $table->boolean('activo')->default(true);
+            $table->string('direccion')->nullable();
 
 
             $table->unsignedBigInteger('persona_id');

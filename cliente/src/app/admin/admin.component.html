@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <button (click)="drawer.toggle()" *ngIf="authState.usuario?.confirmed" aria-label="Menu" mat-icon-button>
+  <button (click)="drawer.toggle()" *ngIf="authState.usuario?.confirmed && authState.usuario?.autorizado" aria-label="Menu" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
   <span>MAS - IPSP</span>
@@ -7,12 +7,14 @@
   <button [matMenuTriggerFor]="dropDown" mat-button>
     <img
       *ngIf="authState.usuario?.avatar === null"
+      alt="sin avatar"
       height="20"
-      src="{{BASE_URL}}user-download/{{authState.usuario?.id}}/{{authState.usuario?.foto?.split('/')[1]}}"
+      src="{{BASE_URL}}user-download/{{authState.usuario?.id}}/{{authState.usuario?.foto?.split('/')[2]}}"
       style="border-radius: 100%;"
       width="20">
     <img
       *ngIf="authState.usuario?.avatar !== null"
+      alt="con avatar"
       height="20"
       src="{{authState.usuario.avatar}}"
       style="border-radius: 100%;"
@@ -20,7 +22,7 @@
     {{ auth$ | async }}
   </button>
   <mat-menu #dropDown="matMenu">
-    <button *ngIf="authState.usuario?.confirmed" mat-menu-item>Ver perfil</button>
+    <!--<button *ngIf="authState.usuario?.confirmed" mat-menu-item>Ver perfil</button>-->
     <button (click)="logout()" mat-menu-item>Cerrar sesión</button>
   </mat-menu>
 </mat-toolbar>
@@ -28,14 +30,18 @@
 <mat-drawer-container class="height-100">
 
   <!--MENU IZQUIERDO-->
+
   <mat-drawer #drawer mode="push">
-    <mat-selection-list #menu [multiple]="false" *ngIf="authState.usuario?.confirmed">
-      <mat-list-option *ngFor="let item of items" [routerLink]="item.routerLink">
-        <mat-icon mat-list-icon>{{ item.icon }}</mat-icon>
-        {{ item.label }}
-      </mat-list-option>
+    <mat-selection-list #menu [multiple]="false" *ngIf="authState.usuario?.confirmed && authState.usuario.autorizado">
+      <div *ngFor="let item of items">
+        <mat-list-option [routerLink]="item.routerLink" *ngxPermissionsOnly="item.urlPermiso">
+          <mat-icon mat-list-icon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+        </mat-list-option>
+      </div>
     </mat-selection-list>
   </mat-drawer>
+
 
   <!--CONTENIDO-->
   <mat-drawer-content>
@@ -59,7 +65,9 @@
         <div class="alert alert-warning alert-dismissible fade show text-center" role="alert"
              *ngIf="!authState.usuario.autorizado">
           <strong>¡Advertencia!</strong> Aun no ha sido comprobado tu registro.<br>
-          <small>Por favor espera que tu registro sea validado por nuestros operadores, esto puede demorar unas horas o unos dias.</small>
+          <small>Por favor espera que tu registro sea validado por nuestros operadores, esto puede demorar unas horas o
+            unos dias.
+          </small>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       </div>

@@ -1,0 +1,68 @@
+<div class="mt-2" *ngIf="eventoState.location === 'index'">
+  <h3>Lista de Eventos</h3>
+  <small class="text-black-50">Eventos</small>
+
+  <div *ngIf="eventoState.loading">
+    <div class="d-flex justify-content-center">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div class="text-center">
+      <p>{{ eventoState.message }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div *ngFor="let evento of eventoState.eventos;let i = index" class="col-md-6">
+      <mat-card class="mt-3">
+        <mat-card-header class="justify-content-between">
+          <mat-card-title>
+            <!--<span class="card-index">{{ eventoState.paginacion.from + i }}</span>-->
+            <span class="text-black-50">
+              <strong>{{ ' ' + evento.nombre | uppercase }}</strong>
+            </span>
+          </mat-card-title>
+
+          <mat-card-subtitle>
+            <p class="text-primary">
+              <small><strong>{{ 'Descripcion: ' }}</strong>{{ evento.descripcion | uppercase }}</small>
+            </p>
+          </mat-card-subtitle>
+          <div>
+            <button (click)="evento.show = true" *ngIf="!evento.show" color="primary" mat-icon-button>
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button (click)="evento.show = false" *ngIf="evento.show" color="warn" mat-icon-button>
+              <mat-icon>visibility_off</mat-icon>
+            </button>
+          </div>
+
+        </mat-card-header>
+        <mat-card-content [collapse]="!evento.show" [isAnimated]="true" class="text-black-50 ml-3">
+          <p><strong>{{ 'Lugar: ' }}</strong>{{ evento.lugar }}</p>
+          <p class="text-success"><b>{{ 'Fecha: ' }}</b>Del <b>{{ evento.fecha_inicial | date: "mediumDate" }}</b> al <b>{{ evento.fecha_final | date: "mediumDate"}}</b></p>
+          <p><strong>{{ 'Tipo: ' }}</strong>{{ evento.tipo | uppercase }}</p>
+        </mat-card-content>
+        <mat-card-actions align="end" class="text-black-50 ml-3">
+          <div class="btn-group">
+            <button
+              (click)="onValidarInscritos(evento)"
+              color="accent"
+              mat-icon-button
+              *ngxPermissionsOnly="permisoValidarPersonas"
+              tooltip="Validar inscritos">
+              <mat-icon>reduce_capacity</mat-icon>
+            </button>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <mat-paginator *ngIf="eventoState.paginacion !== null"
+                 [length]="eventoState.paginacion.total"
+                 [pageSize]="eventoState.paginacion.per_page"
+                 [pageSizeOptions]="[5, 10, 15]"
+                 (page)="onPaginate($event)">
+  </mat-paginator>
+</div>
+
+<mas-validar-persona [eventoState]="eventoState" *ngIf="eventoState.location === 'validar-personas'"></mas-validar-persona>

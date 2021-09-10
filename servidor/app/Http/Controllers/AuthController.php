@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Mail\ConfirmMessage;
 use App\Mail\RegisterMessage;
 use App\Models\Autorizado;
+use App\Models\Estado;
+use App\Models\EventoCongresoParticipante;
+use App\Models\Militancia;
 use App\Models\Persona;
 use App\Models\PersonaCircunscripcion;
+use App\Models\PersonaEvento;
 use App\Models\PersonaUsuario;
+use App\Models\RolPermiso;
 use App\Models\SocialProfile;
 use App\Models\User;
 use Carbon\Carbon;
@@ -145,6 +150,7 @@ class AuthController extends Controller
                 'apellido_materno' => $data['apellido_materno'],
                 'fecha_nacimiento' => $data['fecha_nacimiento'],
                 'carnet' => $data['carnet'],
+                'sexo' => $data['sexo'],
                 'extension_carnet' => $data['extension_carnet'],
                 'expedicion_carnet' => $data['expedicion_carnet'],
                 'email' => $data['email'],
@@ -188,6 +194,23 @@ class AuthController extends Controller
                 'localidad_id' => $data['localidad_id']
             ]);
 
+            // ESTADO
+            Estado::create([
+               'tipo' => 'registrado',
+               'persona_id' => (int) $newPersona['id']
+            ]);
+
+
+
+            //ADD TO EVENTO
+            $agregado = $this->verificarCupoEvento($data['circunscripcion_id'], 1, $newPersona['id']);
+
+            //MILITANCIA
+            Militancia::create([
+                'anio_militancia' => $data['gestion_militancia'],
+                'persona_id'  => $newPersona['id']
+            ]);
+
             $existCarnet = Autorizado::where('carnet', $newPersona['carnet'])
                 ->where('expedicion_carnet', $newPersona['expedicion_carnet'])
                 ->where('extension_carnet', $newPersona['extension_carnet'])
@@ -196,24 +219,93 @@ class AuthController extends Controller
                 try {
                     Mail::to($data['email'])->send(new ConfirmMessage($newUser, $base));
                 } catch (\Throwable $exception) {
-                    return response()->json(['message' => 'Registrado exitosamente, Por favor valide su correo electronico', 'usuario' => $newUser, 'error' => true], 200);
+                    return response()->json(['message' => 'Registrado exitosamente, Por favor valide su correo electronico', 'usuario' => $newUser, 'error' => true, 'agregado' => $agregado], 200);
                 }
             } else {
                 try {
                     Mail::to($data['email'])->send(new RegisterMessage($newUser));
                 } catch (\Throwable $exception) {
-                    return response()->json(['message' => 'Registrado exitosamente, Por favor espere que validemos su registro', 'usuario' => $newUser, 'error' => true], 200);
+                    return response()->json(['message' => 'Registrado exitosamente, Por favor espere que validemos su registro', 'usuario' => $newUser, 'error' => true, 'agregado' => $agregado], 200);
                 }
             }
-            return response()->json(['message' => 'Registrado exitosamente, Por favor valide su correo electronico', 'usuario' => $newUser], 200);
+            return response()->json(['message' => 'Registrado exitosamente, Por favor valide su correo electronico', 'usuario' => $newUser, 'agregado' => $agregado], 200);
         } else {
             return response()->json(['error' => 'El Carnet de identidad ya se encuentra registrado'], 400);
         }
     }
 
+    protected function verificarCupoEvento($idCir, $idEvento, $idpersona) {
+        $nroParticipantes = EventoCongresoParticipante::where('circunscripcion_id', $idCir)
+            ->where('evento_id', $idEvento)
+            ->first();
+
+        $persona = Persona::find($idpersona);
+
+        if ($persona['sexo'] === 'masculino') {
+
+            $nroParticipantesVaronesInscritos = PersonaEvento::where('evento_id', $idEvento)
+                ->where('titular', true)
+                ->count();
+
+            if ($nroParticipantesVaronesInscritos < $nroParticipantes['cupo_varon']) {
+                PersonaEvento::create([
+                    'persona_id' => $persona['id'],
+                    'titular' => 1,
+                    'evento_id' => $idEvento,
+                ]);
+                return true;
+            } else {
+                $nroParticipantesVaronesAdscritos = PersonaEvento::where('evento_id', $idEvento)
+                    ->where('titular', false)
+                    ->count();
+                if ($nroParticipantesVaronesAdscritos < $nroParticipantes['cupo_adscritos_varon']) {
+                    PersonaEvento::create([
+                        'persona_id' => $persona['id'],
+                        'titular' => 0,
+                        'evento_id' => $idEvento,
+                    ]);
+                    return true;
+                } else {
+                    // no es agregado
+                    return false;
+                }
+            }
+        }
+
+        if ($persona['sexo'] === 'femenino') {
+            $nroParticipantesMujeresInscritos = PersonaEvento::where('evento_id', $idEvento)
+                ->where('titular', true)
+                ->count();
+
+            if ($nroParticipantesMujeresInscritos < $nroParticipantes['cupo_mujer']) {
+                PersonaEvento::create([
+                    'persona_id' => $persona['id'],
+                    'titular' => 1,
+                    'evento_id' => $idEvento,
+                ]);
+                return true;
+            } else {
+                $nroParticipantesMujeresAdscritos = PersonaEvento::where('evento_id', $idEvento)
+                    ->where('titular', false)
+                    ->count();
+                if ($nroParticipantesMujeresAdscritos < $nroParticipantes['cupo_adscritos_mujer']) {
+                    PersonaEvento::create([
+                        'persona_id' => $persona['id'],
+                        'titular' => 0,
+                        'evento_id' => $idEvento,
+                    ]);
+                    return true;
+                } else {
+                    // no es agregada
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     public function sendEmailConfirm()
     {
-
         $user = User::find(Auth::user()['id']);
         $base = \request()->input('base');
         Mail::to($user['email'])->send(new ConfirmMessage($user, $base));
@@ -244,6 +336,17 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         return response()->json(['success' => $user], 200);
+    }
+
+    public function getPermisosUrlUser()
+    {
+        $permisos = collect(RolPermiso::where('rol_id', (int)Auth::user()->rol_id)->get());
+        $permisosAlias = $permisos->pluck('url');
+
+        $data = [
+            'permisosAlias' => $permisosAlias,
+        ];
+        return response()->json($data, 200);
     }
 
     public function download($id, $filename = null)

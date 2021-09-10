@@ -1,0 +1,83 @@
+<div class="container-fluid mt-3">
+
+  <div *ngIf="error && persona === null" class="alert alert-danger alert-dismissible fade show text-center"
+       role="alert">
+    <strong>¡Error!</strong> {{ error }}.<br>
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+  </div>
+
+  <h4 *ngIf="evento !== null">Evento: {{ evento.nombre }}</h4>
+
+  <mat-card class="mt-3" *ngIf="error === null && persona !== null">
+    <mat-card-header class="justify-content-between">
+      <mat-card-title>
+      <span class="text-black-50">
+                  <img *ngIf="!persona.show" alt="" class="list-avatar mx-2"
+                       src="{{BASE_URL}}persona-foto-download/{{persona.id}}/{{ persona.foto_filename }}">
+                  <small><b>{{ ' ' + persona.nombre_completo | uppercase }}</b></small>
+                </span>
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        <!--<p class="text-primary"><strong>{{ 'Cargo: ' }}</strong>{{ persona.rol_persona | uppercase }}</p>-->
+      </mat-card-subtitle>
+      <div>
+        <button (click)="persona.show = true" *ngIf="!persona.show" color="primary" mat-icon-button>
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button (click)="persona.show = false" *ngIf="persona.show" color="warn" mat-icon-button>
+          <mat-icon>visibility_off</mat-icon>
+        </button>
+      </div>
+
+    </mat-card-header>
+    <mat-card-content [collapse]="!persona.show" [isAnimated]="true" class="text-black-50 ml-3">
+      <div class="row">
+        <div class="col-8 col-lg-5 mx-auto">
+          <img alt="" class="img-fluid img-responsive img-circle"
+               src="{{BASE_URL}}persona-foto-download/{{persona.id}}/{{ persona.foto_filename }}">
+        </div>
+        <div class="col-lg-7">
+          <p>
+            <b>{{ 'Carnet: ' }}</b>{{ persona.carnet + ' ' + persona.expedicion_carnet }} {{ persona.extension_carnet ? ('- ' + persona.extension_carnet) : '' }}
+          </p>
+          <p><b>{{ 'Circunscripcion: ' }}</b>{{ persona.circunscripcion_codigo | uppercase }}</p>
+          <p><b>{{ 'Sexo: ' }}</b>{{ persona.sexo | uppercase }}</p>
+          <p class="text-primary">
+            <b>{{ 'Año registro militancia: ' }}</b>{{ persona.anio_militancia ? persona.anio_militancia : 'No es militante'}}
+          </p>
+          <p>
+            <b>{{ 'Estado en el sistema: ' }}</b>
+            <em [class.text-primary]="persona.estado === 'registrado'"
+                [class.text-success]="persona.estado === 'aprobado'"
+                [class.text-warning]="persona.estado === 'observado'"
+                [class.text-danger]="persona.estado === 'rechazado'">{{ persona.estado | uppercase }}</em>
+          </p>
+          <div *ngIf="persona.estado === 'aprobado'">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Cargo</mat-label>
+              <input [(ngModel)]="persona.cargo" matInput type="text" disabled>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="persona.estado === 'aprobado'">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Observación en evento</mat-label>
+              <input [(ngModel)]="persona.observacion_evento" matInput type="text" disabled>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="persona.estado === 'aprobado'">
+            <mat-form-field class="w-100" appearance="outline">
+              <mat-label>Estado en evento</mat-label>
+              <mat-select [(ngModel)]="persona.titular" disabled>
+                <mat-option [value]="1">{{ 'Titular' }}</mat-option>
+                <mat-option [value]="0">{{ 'Adscrito' }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

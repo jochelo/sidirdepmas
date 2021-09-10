@@ -53,6 +53,10 @@ export class AuthService {
     );
   }
 
+  getPermisosUrlUser(): Observable<any> {
+    return this.http.get(`${this.base}get-permisos-url-user`);
+  }
+
   /*return new Observable((observer) => {
     observer.next(true);
     observer.complete();

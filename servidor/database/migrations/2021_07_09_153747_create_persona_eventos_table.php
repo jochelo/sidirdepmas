@@ -15,9 +15,9 @@ class CreatePersonaEventosTable extends Migration
     {
         Schema::create('persona_eventos', function (Blueprint $table) {
             $table->id();
-            $table->string('observacion');
-            $table->string('cargo');
-            $table->boolean('titular');
+            $table->string('observacion')->nullable();
+            $table->string('cargo')->nullable();
+            $table->boolean('titular')->default(false);
             $table->unsignedBigInteger('persona_id');
             $table->unsignedBigInteger('evento_id');
 

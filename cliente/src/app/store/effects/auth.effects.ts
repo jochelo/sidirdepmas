@@ -75,20 +75,23 @@ export class AuthEffects {
         switchMap( (props: {data: any}) => {
           return this.authService.onRegister(props.data)
             .pipe(
-              map((response: { message: string, usuario: Usuario, error?: boolean }) => {
+              map((response: { message: string, usuario: Usuario, error?: boolean, agregado?: boolean }) => {
                 if (response.error === undefined) {
                   if (response.usuario.autorizado) {
                     this.toastr.success('Por favor verifique su correo electronico', '¡Registro exitoso!');
                     this.dialog.open(ModalVerifyComponent, {
-                      data: {error: false }
+                      data: {error: false, agregado: response.agregado }
                     });
                   } else {
                     this.toastr.success('Por favor espere que validemos su registro', '¡Registro exitoso!');
+                    this.dialog.open(ModalVerifyComponent, {
+                      data: {agregado: response.agregado }
+                    });
                   }
                 } else {
                   this.toastr.success('¡Registro exitoso!');
                   this.dialog.open(ModalVerifyComponent, {
-                    data: {error: true }
+                    data: {error: true, agregado: response.agregado }
                   });
                 }
                 this.spinner.hide();
@@ -96,6 +99,7 @@ export class AuthEffects {
               }),
               catchError( error => {
                 this.spinner.hide();
+                this.toastr.error('¡Algo salio mal!');
                 return of(registerFailure(error));
               })
             );

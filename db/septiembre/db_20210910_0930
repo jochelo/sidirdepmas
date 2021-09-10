@@ -1,0 +1,1137 @@
+-- MySQL dump 10.13  Distrib 5.7.31, for Win64 (x86_64)
+--
+-- Host: localhost    Database: dirdep
+-- ------------------------------------------------------
+-- Server version	5.7.31
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `ambiente_eventos`
+--
+
+DROP TABLE IF EXISTS `ambiente_eventos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ambiente_eventos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ubicacion_id` bigint(20) unsigned NOT NULL,
+  `evento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ambiente_eventos_ubicacion_id_foreign` (`ubicacion_id`),
+  KEY `ambiente_eventos_evento_id_foreign` (`evento_id`),
+  CONSTRAINT `ambiente_eventos_evento_id_foreign` FOREIGN KEY (`evento_id`) REFERENCES `eventos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ambiente_eventos_ubicacion_id_foreign` FOREIGN KEY (`ubicacion_id`) REFERENCES `ubicacions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ambiente_eventos`
+--
+
+LOCK TABLES `ambiente_eventos` WRITE;
+/*!40000 ALTER TABLE `ambiente_eventos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ambiente_eventos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `asistencia_eventos`
+--
+
+DROP TABLE IF EXISTS `asistencia_eventos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `asistencia_eventos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `fecha` datetime NOT NULL,
+  `observacion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `ambiente_evento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `asistencia_eventos_persona_id_foreign` (`persona_id`),
+  KEY `asistencia_eventos_ambiente_evento_id_foreign` (`ambiente_evento_id`),
+  CONSTRAINT `asistencia_eventos_ambiente_evento_id_foreign` FOREIGN KEY (`ambiente_evento_id`) REFERENCES `ambiente_eventos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `asistencia_eventos_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asistencia_eventos`
+--
+
+LOCK TABLES `asistencia_eventos` WRITE;
+/*!40000 ALTER TABLE `asistencia_eventos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asistencia_eventos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `autorizados`
+--
+
+DROP TABLE IF EXISTS `autorizados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `autorizados` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `carnet` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expedicion_carnet` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `extension_carnet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `autorizados_carnet_unique` (`carnet`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `autorizados`
+--
+
+LOCK TABLES `autorizados` WRITE;
+/*!40000 ALTER TABLE `autorizados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `autorizados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `circunscripcions`
+--
+
+DROP TABLE IF EXISTS `circunscripcions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `circunscripcions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codigo_anterior` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `circunscripcions`
+--
+
+LOCK TABLES `circunscripcions` WRITE;
+/*!40000 ALTER TABLE `circunscripcions` DISABLE KEYS */;
+INSERT INTO `circunscripcions` VALUES (1,'C-29','','',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'C-30','','',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'C-31','','',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(4,'C-32','','',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `circunscripcions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `departamentos`
+--
+
+DROP TABLE IF EXISTS `departamentos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `departamentos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `sigla` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `orden` int(10) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `departamentos`
+--
+
+LOCK TABLES `departamentos` WRITE;
+/*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
+INSERT INTO `departamentos` VALUES (1,'OR','ORURO',4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'LP','LA PAZ',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'PT','POTOSI',7,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(4,'CO','COCHABAMBA',2,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(5,'CH','CHUQUISACA',5,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(6,'TA','TARIJA',6,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(7,'PA','PANDO',8,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(8,'BE','BENI',9,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(9,'SC','SANTA CRUZ',3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estados`
+--
+
+DROP TABLE IF EXISTS `estados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `estados` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tipo` enum('registrado','observado','rechazado','aprobado') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registrado',
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `estados_persona_id_foreign` (`persona_id`),
+  CONSTRAINT `estados_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `estados`
+--
+
+LOCK TABLES `estados` WRITE;
+/*!40000 ALTER TABLE `estados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `estados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `evento_congreso_participantes`
+--
+
+DROP TABLE IF EXISTS `evento_congreso_participantes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `evento_congreso_participantes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cupo_varon` int(10) unsigned NOT NULL,
+  `cupo_mujer` int(10) unsigned NOT NULL,
+  `equidad` tinyint(1) NOT NULL,
+  `cupo_adscritos_varon` int(10) unsigned NOT NULL,
+  `cupo_adscritos_mujer` int(10) unsigned NOT NULL,
+  `adscritos` tinyint(1) NOT NULL,
+  `circunscripcion_id` bigint(20) unsigned NOT NULL,
+  `evento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `evento_congreso_participantes_circunscripcion_id_foreign` (`circunscripcion_id`),
+  KEY `evento_congreso_participantes_evento_id_foreign` (`evento_id`),
+  CONSTRAINT `evento_congreso_participantes_circunscripcion_id_foreign` FOREIGN KEY (`circunscripcion_id`) REFERENCES `circunscripcions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `evento_congreso_participantes_evento_id_foreign` FOREIGN KEY (`evento_id`) REFERENCES `eventos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `evento_congreso_participantes`
+--
+
+LOCK TABLES `evento_congreso_participantes` WRITE;
+/*!40000 ALTER TABLE `evento_congreso_participantes` DISABLE KEYS */;
+INSERT INTO `evento_congreso_participantes` VALUES (1,100,100,1,50,50,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(2,100,100,1,50,50,1,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(3,100,100,1,50,50,1,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(4,100,100,1,50,50,1,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `evento_congreso_participantes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `eventos`
+--
+
+DROP TABLE IF EXISTS `eventos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eventos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `lugar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecha_inicial` date NOT NULL,
+  `fecha_final` date NOT NULL,
+  `tipo` enum('reunion','ampliado','congreso') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `observacion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
+  `archivo_adjunto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ubicacion_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `eventos_ubicacion_id_foreign` (`ubicacion_id`),
+  CONSTRAINT `eventos_ubicacion_id_foreign` FOREIGN KEY (`ubicacion_id`) REFERENCES `ubicacions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eventos`
+--
+
+LOCK TABLES `eventos` WRITE;
+/*!40000 ALTER TABLE `eventos` DISABLE KEYS */;
+INSERT INTO `eventos` VALUES (1,'Municipio de sabaya','2021-09-11','2021-09-12','congreso','9º CONGRESO DEPARTAMENTAL ORDINARIO DEL MAS-IPSP ORURO','9no CONGRESO DEPARTAMENTAL ORDINARIO DEL MOVIMIENTO AL SOCIALISMO - INSTRUMENTO POLITICO POR LA SOBERANIA DE LOS PUEBLOS, ORURO',NULL,1,NULL,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `eventos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+LOCK TABLES `failed_jobs` WRITE;
+/*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `huellas`
+--
+
+DROP TABLE IF EXISTS `huellas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `huellas` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `numero_dedo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre_dedo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codigo_huella` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `huellas_persona_id_foreign` (`persona_id`),
+  CONSTRAINT `huellas_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `huellas`
+--
+
+LOCK TABLES `huellas` WRITE;
+/*!40000 ALTER TABLE `huellas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `huellas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `invitados`
+--
+
+DROP TABLE IF EXISTS `invitados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `invitados` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cargo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `institucion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `evento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `invitados_persona_id_foreign` (`persona_id`),
+  KEY `invitados_evento_id_foreign` (`evento_id`),
+  CONSTRAINT `invitados_evento_id_foreign` FOREIGN KEY (`evento_id`) REFERENCES `eventos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `invitados_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `invitados`
+--
+
+LOCK TABLES `invitados` WRITE;
+/*!40000 ALTER TABLE `invitados` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invitados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `localidads`
+--
+
+DROP TABLE IF EXISTS `localidads`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `localidads` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitud` double(10,7) DEFAULT NULL,
+  `longitud` double(10,7) DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL,
+  `municipio_id` bigint(20) unsigned NOT NULL,
+  `provincia_id` bigint(20) unsigned NOT NULL,
+  `departamento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `localidads_municipio_id_foreign` (`municipio_id`),
+  KEY `localidads_provincia_id_foreign` (`provincia_id`),
+  KEY `localidads_departamento_id_foreign` (`departamento_id`),
+  CONSTRAINT `localidads_departamento_id_foreign` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `localidads_municipio_id_foreign` FOREIGN KEY (`municipio_id`) REFERENCES `municipios` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `localidads_provincia_id_foreign` FOREIGN KEY (`provincia_id`) REFERENCES `provincias` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `localidads`
+--
+
+LOCK TABLES `localidads` WRITE;
+/*!40000 ALTER TABLE `localidads` DISABLE KEYS */;
+INSERT INTO `localidads` VALUES (1,'CHALLAPATA',-18.9023200,-66.7751540,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(2,'CACACHACA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(3,'CULTA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(4,'CRUCE CULTA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(5,'ANCACOTA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(6,'HUANCARANI',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(7,'HUANCANE',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(8,'THOLA PALCA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(9,'CRUCERO',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(10,'MACHOCA CHURACANI',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(11,'CENTRAL AGUAS CALIENTES',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(12,'URU MURATO WILAÑEQUE',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(13,'URU CAYACHATA',NULL,NULL,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(14,'SANTUARIO DE QUILLACAS',-19.2322900,-66.9420700,1,2,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(15,'SEVARUYO',NULL,NULL,1,2,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(16,'SORAGA',NULL,NULL,1,2,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(17,'CORQUE',-18.3508380,-67.6823040,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(18,'SAN JOSE DE CALA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(19,'OPOQUERI',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(20,'SAN ANTONIO DE NOR CALA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(21,'PACOYO',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(22,'CARACOTA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(23,'JANCOCALA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(24,'PAMATA AITE',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(25,'VILLA ESPERANZA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(26,'SAN PEDRO DE HUAYLLOCO',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(27,'VILLA TARUCACHI',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(28,'LACA LACA QUITA QUITA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(29,'CENTRAL COPACABANA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(30,'VILLA NUEVA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(31,'ANDAPATA LUPE',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(32,'HUMAMARCA',NULL,NULL,1,3,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(33,'CHOQUE COTA',NULL,NULL,1,4,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(34,'ANDAPATA',NULL,NULL,1,4,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(35,'ORURO',NULL,NULL,1,5,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(36,'CARACOLLO',-17.6352140,-67.2006300,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(37,'VILLA SANTA FE',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(38,'VENTILLA PONGO',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(39,'JANKO UÑO',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(40,'LA JOYA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(41,'VILACARA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(42,'SILLOTA VITO',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(43,'SILLOTA BELEN',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(44,'LAJMA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(45,'KEMALLA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(46,'NUEVA LLALLAGUA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(47,'SOLEDAD',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(48,'HUNTUTA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(49,'HORENCO',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(50,'CENTRAL VILA VILA A',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(51,'CENTRAL  CAÑOHUMA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(52,'CONCHA MARCA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(53,'SAN ANTONIO DE ANGULO',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(54,'SAN ANTONIO CRUZANI',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(55,'ANCOTANGA',NULL,NULL,1,6,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(56,'EL CHORO',NULL,NULL,1,7,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(57,'CRUCERO BELEN',NULL,NULL,1,7,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(58,'CHALLACOLLO',NULL,NULL,1,7,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(59,'SAN FELIPE DE CHAITIVI',NULL,NULL,1,7,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(60,'RANCHO GRANDE',NULL,NULL,1,7,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(61,'SEPULTURAS',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(62,'PARIA',-17.8226300,-67.0180700,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(63,'GUARDAÑA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(64,'THOLAPALCA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(65,'HUAYÑA PASTO GRANDE',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(66,'LEQUEPALCA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(67,'SORACACHI',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(68,'IRUMA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(69,'CACHI CACHI',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(70,'CRUCE OCOTAVI',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(71,'MICAYANI',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(72,'SAN JUAN PAMPA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(73,'BANDERANI',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(74,'JACHUYO',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(75,'JATITA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(76,'COLLPA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(77,'KASA HUASA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(78,'CONDORCHINOCA',NULL,NULL,1,8,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(79,'SALINAS GARCI DE MENDOZA',-19.6376340,-67.6752000,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(80,'PUQUI',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(81,'TAUCA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(82,'INEXA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(83,'CHALLACOTA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(84,'JIRIRA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(85,'AROMA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(86,'UCUMASI',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(87,'CONCEPCION DE BELEN',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(88,'SAN MARTIN',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(89,'VILLA ESPERANZA',-19.3963930,-67.2820740,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(90,'LUCA',NULL,NULL,1,9,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(91,'PAMPA AULLAGAS',NULL,NULL,1,10,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(92,'BENGAL VINTO',NULL,NULL,1,10,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(93,'ICHALULA',NULL,NULL,1,10,4,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(94,'HUACHACALLA',-18.7933430,-68.2620240,1,11,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(95,'ESCARA',NULL,NULL,1,12,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(96,'PAYRUMANI DEL LITORAL',NULL,NULL,1,12,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(97,'CRUZ DE MACHACAMARCA',NULL,NULL,1,13,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(98,'FLORIDA',NULL,NULL,1,13,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(99,'HUAYLLAS',NULL,NULL,1,13,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(100,'YUNGUYO DE LITORAL',NULL,NULL,1,14,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(101,'ESMERALDA',NULL,NULL,1,15,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(102,'ROMERO PAMPA',NULL,NULL,1,15,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(103,'PEÑA PEÑANI',NULL,NULL,1,15,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(104,'BELEN',NULL,NULL,1,15,5,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(105,'LA RIVERA',-19.0157300,-68.6621300,1,16,6,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(106,'CARANGAS',NULL,NULL,1,17,6,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(107,'TODOS SANTOS',NULL,NULL,1,18,6,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(108,'SANTIAGO DE HUAYLLAMARCA',-17.8385200,-67.9426960,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(109,'ROMERO HUMA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(110,'CHUQUICHAMBI',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(111,'SAN MIGUEL',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(112,'LLANQUERA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(113,'BELEN DE CHOQUECOTA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(114,'TUNUPA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(115,'BELLA VISTA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(116,'CHUJÑOHUMA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(117,'PUERTO ÑEQUETA',NULL,NULL,1,19,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(118,'HUANUNI',-18.2860150,-66.8348100,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(119,'CATARICAGUA',NULL,NULL,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(120,'MOROCOCALA',NULL,NULL,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(121,'NEGRO PABELLON',NULL,NULL,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(122,'HUALLATIRI',NULL,NULL,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(123,'BOMBO',NULL,NULL,1,20,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(124,'MACHACAMARCA',NULL,NULL,1,21,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(125,'SORA SORA',NULL,NULL,1,21,8,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(126,'VILLA POOPO',-18.3804420,-66.9658660,1,22,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(127,'TOLAPAMPA',NULL,NULL,1,22,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(128,'VENTA Y MEDIA',NULL,NULL,1,22,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(129,'CORIPATA',NULL,NULL,1,22,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(130,'PUÑACA',NULL,NULL,1,22,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(131,'PAZÑA',NULL,NULL,1,23,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(132,'URMIRI',-19.2274440,-66.7194300,1,23,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(133,'PEÑAS',NULL,NULL,1,23,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(134,'TOTORAL',NULL,NULL,1,23,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(135,'AVICAYA',NULL,NULL,1,23,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(136,'ANTEQUERA',NULL,NULL,1,24,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(137,'CHALGUAMAYU',NULL,NULL,1,24,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(138,'TUTUNI',NULL,NULL,1,24,9,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(139,'SABAYA',-19.0155530,-68.3746260,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(140,'PACARIZA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(141,'PISIGA BOLIVAR SUCRE',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(142,'JULO',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(143,'NEGRILLOS',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(144,'PARAJAYA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(145,'BELLA VISTA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(146,'MIRAFLORES',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(147,'SACABAYA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(148,'VILLA VITALINA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(149,'SAN ANTONIO DE PITACOLLO',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(150,'QUEA QUEANI',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(151,'TUNUPA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(152,'CRUZ DE HUAYLLAS',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(153,'VILLA ROSARIO',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(154,'ALAROCO',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(155,'PAGADOR',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(156,'CAHUANA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(157,'COIPASA',NULL,NULL,1,26,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(158,'CHIPAYA',NULL,NULL,1,27,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(159,'AYPARAVI',NULL,NULL,1,27,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(160,'VESTRULLANI',NULL,NULL,1,27,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(161,'CURAHUARA DE CARANGAS',-17.8428020,-68.4088600,1,28,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(162,'SAJAMA',NULL,NULL,1,28,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(163,'CARIPE',NULL,NULL,1,28,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(164,'LAGUNAS',NULL,NULL,1,28,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(165,'TITIRI',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(166,'HUAJRIRI',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(167,'CHACHACOMANI',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(168,'ASUNCION DE LACA LACA',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(169,'COSAPA',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(170,'TURCO',-18.1873820,-68.1708100,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(171,'IRUNI',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(172,'CRUCERO',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(173,'MACAYA',NULL,NULL,1,29,11,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(174,'TOTORA',-17.7934420,-68.1460600,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(175,'HUACANAPI',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(176,'MARQUIRIVI',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(177,'ROMEROCOTA',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(178,'CRUCERO',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(179,'CALAZAYA',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(180,'CULTA',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(181,'VINO HUTA',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(182,'SORA SORA',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(183,'VILLA IRPOCO',NULL,NULL,1,30,12,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(184,'TOLEDO',-18.1812740,-67.4062700,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(185,'SAUCARI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(186,'CHUQUIÃ‘A',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(187,'CHALLAVITO',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(188,'CULLURI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(189,'CHOCARASI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(190,'CATUYO',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(191,'UNTAVI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(192,'KARI KARI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(193,'CHALLA CRUZ',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(194,'COLLPAHUMA',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(195,'SICA ULLAMI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(196,'KULLURI',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(197,'CENTRAL JAUSO',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(198,'TOMA TOMA',-18.1722530,-67.4078800,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(199,'TIJLLACAGUA',NULL,NULL,1,31,13,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(200,'SANTIAGO DE HUARI',-19.0129260,-66.7772600,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(201,'CONDO \"C\"',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(202,'CONDO \"K\"',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(203,'URMIRI',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(204,'VICHAJ LUPE',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(205,'LAGUNILLAS',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(206,'GUADALUPE',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(207,'CAICO BOLIVAR',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(208,'CASTILLAHUMA',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(209,'CARACOTA',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(210,'URU URU LLAPA LLAPANI',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(211,'VILLA VERDE',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(212,'LUCUMPAYA',NULL,NULL,1,32,14,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(213,'ANDAMARCA',-18.7787250,-67.5075400,1,33,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(214,'ORINOCA',NULL,NULL,1,33,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(215,'EDUARDO AVAROA',-18.8701610,-67.5003800,1,33,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(216,'BELEN DE ANDAMARCA',NULL,NULL,1,34,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(217,'CALAMA HUAYLLAMARCA',NULL,NULL,1,34,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(218,'REAL MACHACAMARCA',NULL,NULL,1,34,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(219,'CRUZ DE HUAYLLAMARCA',NULL,NULL,1,34,15,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(220,'EUCALIPTUS',-17.5956700,-67.5094150,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(221,'AMACHUMA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(222,'TARUCAMARCA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(223,'ALCAMARCA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(224,'HUANCAROMA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(225,'QUELCATA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(226,'MACHACAMARCA',NULL,NULL,1,35,16,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(227,'ÑEQUETA',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(228,'Chapi',NULL,NULL,1,25,10,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(229,'CRUCE VENTILLA',-19.0698970,-66.2065800,1,1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(230,'ORURO',NULL,NULL,1,36,3,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `localidads` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `migrations`
+--
+
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `migrations`
+--
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+INSERT INTO `migrations` VALUES (1,'2014_06_07_202630_create_rols_table',1),(2,'2014_10_12_000000_create_users_table',1),(3,'2014_10_12_100000_create_password_resets_table',1),(4,'2014_10_12_200000_add_two_factor_columns_to_users_table',1),(5,'2016_06_01_000001_create_oauth_auth_codes_table',1),(6,'2016_06_01_000002_create_oauth_access_tokens_table',1),(7,'2016_06_01_000003_create_oauth_refresh_tokens_table',1),(8,'2016_06_01_000004_create_oauth_clients_table',1),(9,'2016_06_01_000005_create_oauth_personal_access_clients_table',1),(10,'2019_08_19_000000_create_failed_jobs_table',1),(11,'2021_06_07_191714_create_personas_table',1),(12,'2021_06_07_192822_create_persona_usuarios_table',1),(13,'2021_06_07_202803_create_permisos_table',1),(14,'2021_06_07_202818_create_rol_permisos_table',1),(15,'2021_06_12_152037_create_social_profiles_table',1),(16,'2021_07_09_142947_create_autorizados_table',1),(17,'2021_07_09_143342_create_huellas_table',1),(18,'2021_07_09_143829_create_circunscripcions_table',1),(19,'2021_07_09_145016_create_movimiento_socials_table',1),(20,'2021_07_09_145826_create_persona_movimiento_socials_table',1),(21,'2021_07_09_150655_create_departamentos_table',1),(22,'2021_07_09_151021_create_provincias_table',1),(23,'2021_07_09_151312_create_municipios_table',1),(24,'2021_07_09_152047_create_localidads_table',1),(25,'2021_07_09_152447_create_ubicacions_table',1),(26,'2021_07_09_152449_create_persona_circunscripcions_table',1),(27,'2021_07_09_152450_create_eventos_table',1),(28,'2021_07_09_153747_create_persona_eventos_table',1),(29,'2021_07_09_154047_create_invitados_table',1),(30,'2021_07_09_154330_create_evento_congreso_participantes_table',1),(31,'2021_07_09_155330_create_ambiente_eventos_table',1),(32,'2021_07_09_155601_create_asistencia_eventos_table',1),(33,'2021_09_06_193138_create_militancias_table',1),(34,'2021_09_07_173534_create_estados_table',1),(35,'2021_09_07_174731_create_observacions_table',1);
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `militancias`
+--
+
+DROP TABLE IF EXISTS `militancias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `militancias` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `anio_militancia` int(11) NOT NULL,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `militancias_persona_id_foreign` (`persona_id`),
+  CONSTRAINT `militancias_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `militancias`
+--
+
+LOCK TABLES `militancias` WRITE;
+/*!40000 ALTER TABLE `militancias` DISABLE KEYS */;
+/*!40000 ALTER TABLE `militancias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `movimiento_socials`
+--
+
+DROP TABLE IF EXISTS `movimiento_socials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `movimiento_socials` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `razon_social` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `observacion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado` enum('activo','inactivo') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'activo',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `movimiento_socials`
+--
+
+LOCK TABLES `movimiento_socials` WRITE;
+/*!40000 ALTER TABLE `movimiento_socials` DISABLE KEYS */;
+/*!40000 ALTER TABLE `movimiento_socials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `municipios`
+--
+
+DROP TABLE IF EXISTS `municipios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `municipios` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitud` double(10,7) DEFAULT NULL,
+  `longitud` double(10,7) DEFAULT NULL,
+  `provincia_id` bigint(20) unsigned NOT NULL,
+  `departamento_id` bigint(20) unsigned NOT NULL,
+  `circunscripcion_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `municipios_provincia_id_foreign` (`provincia_id`),
+  KEY `municipios_departamento_id_foreign` (`departamento_id`),
+  KEY `municipios_circunscripcion_id_foreign` (`circunscripcion_id`),
+  CONSTRAINT `municipios_circunscripcion_id_foreign` FOREIGN KEY (`circunscripcion_id`) REFERENCES `circunscripcions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `municipios_departamento_id_foreign` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `municipios_provincia_id_foreign` FOREIGN KEY (`provincia_id`) REFERENCES `provincias` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `municipios`
+--
+
+LOCK TABLES `municipios` WRITE;
+/*!40000 ALTER TABLE `municipios` DISABLE KEYS */;
+INSERT INTO `municipios` VALUES (1,'CHALLAPATA',NULL,NULL,1,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'SANTUARIO DE QUILLACAS',NULL,NULL,1,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'CORQUE',NULL,NULL,2,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(4,'CHOQUE COTA',NULL,NULL,2,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(5,'ORURO',NULL,NULL,3,1,1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(6,'CARACOLLO',NULL,NULL,3,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(7,'EL CHORO',NULL,NULL,3,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(8,'SORACACHI',NULL,NULL,3,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(9,'SALINAS DE GARCI DE MENDOZA',NULL,NULL,4,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(10,'PAMPA AULLAGAS',NULL,NULL,4,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(11,'HUACHACALLA',NULL,NULL,5,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(12,'ESCARA',NULL,NULL,5,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(13,'CRUZ DE MACHACAMARCA',NULL,NULL,5,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(14,'YUNGUYO DE LITORAL',NULL,NULL,5,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(15,'ESMERALDA',NULL,NULL,5,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(16,'LA RIVERA',NULL,NULL,6,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(17,'CARANGAS',NULL,NULL,6,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(18,'TODOS SANTOS',NULL,NULL,6,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(19,'SANTIAGO DE HUAYLLAMARCA',NULL,NULL,7,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(20,'HUANUNI',NULL,NULL,8,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(21,'MACHACAMARCA',NULL,NULL,8,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(22,'VILLA POOPO',NULL,NULL,9,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(23,'PAZÑA',NULL,NULL,9,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(24,'ANTEQUERA',NULL,NULL,9,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(25,'SABAYA',NULL,NULL,10,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(26,'COIPASA',NULL,NULL,10,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(27,'CHIPAYA',NULL,NULL,10,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(28,'CURAHUARA DE CARANGAS',NULL,NULL,11,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(29,'TURCO',NULL,NULL,11,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(30,'TOTORA',NULL,NULL,12,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(31,'TOLEDO',NULL,NULL,13,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(32,'SANTIAGO DE HUARI',NULL,NULL,14,1,3,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(33,'ANDAMARCA',NULL,NULL,15,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(34,'BELEN DE ANDAMARCA',NULL,NULL,15,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(35,'EUCALIPTUS',NULL,NULL,16,1,4,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(36,'ORURO',NULL,NULL,3,1,2,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `municipios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oauth_access_tokens`
+--
+
+DROP TABLE IF EXISTS `oauth_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_access_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `client_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_access_tokens_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oauth_access_tokens`
+--
+
+LOCK TABLES `oauth_access_tokens` WRITE;
+/*!40000 ALTER TABLE `oauth_access_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_access_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oauth_auth_codes`
+--
+
+DROP TABLE IF EXISTS `oauth_auth_codes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_auth_codes` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `client_id` bigint(20) unsigned NOT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_auth_codes_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oauth_auth_codes`
+--
+
+LOCK TABLES `oauth_auth_codes` WRITE;
+/*!40000 ALTER TABLE `oauth_auth_codes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_auth_codes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oauth_clients`
+--
+
+DROP TABLE IF EXISTS `oauth_clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_clients` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_access_client` tinyint(1) NOT NULL,
+  `password_client` tinyint(1) NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_clients_user_id_index` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oauth_clients`
+--
+
+LOCK TABLES `oauth_clients` WRITE;
+/*!40000 ALTER TABLE `oauth_clients` DISABLE KEYS */;
+INSERT INTO `oauth_clients` VALUES (1,NULL,'DIRDEPMAS Personal Access Client','ZxAvEu1pMVvyZj1Cw1KiKYfesKZ31UvYtXO9GsNo',NULL,'http://localhost',1,0,0,'2021-09-10 17:39:55','2021-09-10 17:39:55'),(2,NULL,'DIRDEPMAS Password Grant Client','oiRMXjEX1S1edmnLC8asI0SxrikyeU4YSPlJoGcI','users','http://localhost',0,1,0,'2021-09-10 17:39:55','2021-09-10 17:39:55');
+/*!40000 ALTER TABLE `oauth_clients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oauth_personal_access_clients`
+--
+
+DROP TABLE IF EXISTS `oauth_personal_access_clients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_personal_access_clients` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oauth_personal_access_clients`
+--
+
+LOCK TABLES `oauth_personal_access_clients` WRITE;
+/*!40000 ALTER TABLE `oauth_personal_access_clients` DISABLE KEYS */;
+INSERT INTO `oauth_personal_access_clients` VALUES (1,1,'2021-09-10 17:39:55','2021-09-10 17:39:55');
+/*!40000 ALTER TABLE `oauth_personal_access_clients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `oauth_refresh_tokens`
+--
+
+DROP TABLE IF EXISTS `oauth_refresh_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_refresh_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `oauth_refresh_tokens`
+--
+
+LOCK TABLES `oauth_refresh_tokens` WRITE;
+/*!40000 ALTER TABLE `oauth_refresh_tokens` DISABLE KEYS */;
+/*!40000 ALTER TABLE `oauth_refresh_tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `observacions`
+--
+
+DROP TABLE IF EXISTS `observacions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `observacions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subsanado` tinyint(1) NOT NULL DEFAULT '0',
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `observacions_persona_id_foreign` (`persona_id`),
+  CONSTRAINT `observacions_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `observacions`
+--
+
+LOCK TABLES `observacions` WRITE;
+/*!40000 ALTER TABLE `observacions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `observacions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `password_resets`
+--
+
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+LOCK TABLES `password_resets` WRITE;
+/*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
+/*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `permisos`
+--
+
+DROP TABLE IF EXISTS `permisos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `permisos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `a` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `b` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `c` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `d` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `e` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `alias` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permisos_alias_unique` (`alias`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `permisos`
+--
+
+LOCK TABLES `permisos` WRITE;
+/*!40000 ALTER TABLE `permisos` DISABLE KEYS */;
+INSERT INTO `permisos` VALUES (1,'1','0','0','0','0','Menu Izquierda','Visualización del menu en la parte izquierda','menu-izq',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(2,'1','1','0','0','0','Dashboard','Visualización del modulo de dashboard','dashboard',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(3,'1','2','0','0','0','Eventos','Permiso para el nivel de Eventos','eventos',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(4,'1','2','1','0','0','Lista de registro de Eventos','permiso para navegar en la lista de Eventos','eventos-index',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(5,'1','2','2','0','0','Validar Inscritos','permiso para validar registros de inscritos','validar-personas',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(6,'1','2','2','1','0','Lista de registro de Personas','permiso para navegar en la lista de personas del Evento','personas-evento-index',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(7,'1','2','2','2','0','Añadir observacion de registro','permiso para Registrar observaciones del registro de la persona','personas-evento-create-observacion',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(8,'1','2','2','3','0','Ver observaciones del registro','permiso para ver la lista de observaciones del registro de la persona','personas-evento-show-observacion',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(9,'1','2','2','4','0','Aprobar registro','permiso para aprobar el registro de la persona','personas-evento-aprobar',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(10,'1','2','2','5','0','Rechazar registro','permiso para rechazar el registro de la persona','personas-evento-rechazar',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(11,'1','2','2','6','0','Editar informacion del registro para el evento','permiso para editar la información del registro de la persona para el evento','personas-evento-editar-info',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(12,'1','2','2','7','0','Imprimir Credencial','permiso para imprimir credencial del evento para la persona','personas-evento-credencial',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(13,'1','3','0','0','0','Registrar personas','permiso para registrar personas','store-personas',1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `permisos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persona_circunscripcions`
+--
+
+DROP TABLE IF EXISTS `persona_circunscripcions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persona_circunscripcions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `fecha_inicial` date DEFAULT NULL,
+  `fecha_final` date DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
+  `direccion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `circunscripcion_id` bigint(20) unsigned NOT NULL,
+  `localidad_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `persona_circunscripcions_persona_id_foreign` (`persona_id`),
+  KEY `persona_circunscripcions_circunscripcion_id_foreign` (`circunscripcion_id`),
+  KEY `persona_circunscripcions_localidad_id_foreign` (`localidad_id`),
+  CONSTRAINT `persona_circunscripcions_circunscripcion_id_foreign` FOREIGN KEY (`circunscripcion_id`) REFERENCES `circunscripcions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `persona_circunscripcions_localidad_id_foreign` FOREIGN KEY (`localidad_id`) REFERENCES `localidads` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `persona_circunscripcions_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persona_circunscripcions`
+--
+
+LOCK TABLES `persona_circunscripcions` WRITE;
+/*!40000 ALTER TABLE `persona_circunscripcions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `persona_circunscripcions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persona_eventos`
+--
+
+DROP TABLE IF EXISTS `persona_eventos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persona_eventos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `observacion` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cargo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titular` tinyint(1) NOT NULL DEFAULT '0',
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `evento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `persona_eventos_persona_id_foreign` (`persona_id`),
+  KEY `persona_eventos_evento_id_foreign` (`evento_id`),
+  CONSTRAINT `persona_eventos_evento_id_foreign` FOREIGN KEY (`evento_id`) REFERENCES `eventos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `persona_eventos_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persona_eventos`
+--
+
+LOCK TABLES `persona_eventos` WRITE;
+/*!40000 ALTER TABLE `persona_eventos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `persona_eventos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persona_movimiento_socials`
+--
+
+DROP TABLE IF EXISTS `persona_movimiento_socials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persona_movimiento_socials` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `estado` enum('activo','inactivo') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'activo',
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `movimiento_social_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `persona_movimiento_socials_persona_id_foreign` (`persona_id`),
+  KEY `persona_movimiento_socials_movimiento_social_id_foreign` (`movimiento_social_id`),
+  CONSTRAINT `persona_movimiento_socials_movimiento_social_id_foreign` FOREIGN KEY (`movimiento_social_id`) REFERENCES `movimiento_socials` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `persona_movimiento_socials_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persona_movimiento_socials`
+--
+
+LOCK TABLES `persona_movimiento_socials` WRITE;
+/*!40000 ALTER TABLE `persona_movimiento_socials` DISABLE KEYS */;
+/*!40000 ALTER TABLE `persona_movimiento_socials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `persona_usuarios`
+--
+
+DROP TABLE IF EXISTS `persona_usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `persona_usuarios` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `persona_id` bigint(20) unsigned NOT NULL,
+  `usuario_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `persona_usuarios_persona_id_foreign` (`persona_id`),
+  KEY `persona_usuarios_usuario_id_foreign` (`usuario_id`),
+  CONSTRAINT `persona_usuarios_persona_id_foreign` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `persona_usuarios_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `persona_usuarios`
+--
+
+LOCK TABLES `persona_usuarios` WRITE;
+/*!40000 ALTER TABLE `persona_usuarios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `persona_usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `personas`
+--
+
+DROP TABLE IF EXISTS `personas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `personas` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apellido_paterno` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apellido_materno` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `sexo` enum('masculino','femenino') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `carnet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `expedicion_carnet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extension_carnet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imgcian` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `imgcirev` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personas_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `personas`
+--
+
+LOCK TABLES `personas` WRITE;
+/*!40000 ALTER TABLE `personas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `personas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `provincias`
+--
+
+DROP TABLE IF EXISTS `provincias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `provincias` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `departamento_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `provincias_departamento_id_foreign` (`departamento_id`),
+  CONSTRAINT `provincias_departamento_id_foreign` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `provincias`
+--
+
+LOCK TABLES `provincias` WRITE;
+/*!40000 ALTER TABLE `provincias` DISABLE KEYS */;
+INSERT INTO `provincias` VALUES (1,'AVAROA',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'CARANGAS',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'CERCADO',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(4,'LADISLAO CABRERA',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(5,'LITORAL',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(6,'MEJILLONES',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(7,'NOR CARANGAS',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(8,'PANTALEON DALENCE',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(9,'POOPO',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(10,'SABAYA',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(11,'SAJAMA',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(12,'SAN PEDRO DE TOTORA',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(13,'SAUCARI',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(14,'SEBASTIAN PAGADOR',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(15,'SUD CARANGAS',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(16,'TOMAS BARRON',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(17,'PEDRO DOMINGO MURILLO',1,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `provincias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rol_permisos`
+--
+
+DROP TABLE IF EXISTS `rol_permisos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rol_permisos` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `rol_id` bigint(20) unsigned NOT NULL,
+  `permiso_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rol_permisos_rol_id_foreign` (`rol_id`),
+  KEY `rol_permisos_permiso_id_foreign` (`permiso_id`),
+  CONSTRAINT `rol_permisos_permiso_id_foreign` FOREIGN KEY (`permiso_id`) REFERENCES `permisos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `rol_permisos_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `rols` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rol_permisos`
+--
+
+LOCK TABLES `rol_permisos` WRITE;
+/*!40000 ALTER TABLE `rol_permisos` DISABLE KEYS */;
+INSERT INTO `rol_permisos` VALUES (1,1,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(2,1,2,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(3,1,3,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(4,1,4,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(5,1,5,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(6,1,6,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(7,1,7,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(8,1,8,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(9,1,9,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(10,1,10,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(11,1,11,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(12,1,12,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(13,1,13,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(14,6,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(15,6,2,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(16,6,3,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(17,6,4,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(18,6,5,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(19,6,6,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(20,6,8,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(21,7,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(22,7,2,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(23,7,3,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(24,7,4,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(25,7,5,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(26,7,6,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(27,7,7,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(28,7,8,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(29,7,9,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(30,7,10,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(31,7,11,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(32,7,12,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(33,7,13,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(34,2,1,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43'),(35,2,2,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `rol_permisos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rols`
+--
+
+DROP TABLE IF EXISTS `rols`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rols` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rols`
+--
+
+LOCK TABLES `rols` WRITE;
+/*!40000 ALTER TABLE `rols` DISABLE KEYS */;
+INSERT INTO `rols` VALUES (1,'Administrador','Administrador general del sistema',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'Militante','Persona militante del partido',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'Encargado Provincia','Persona militante encargado de provincia',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(4,'Encargado Circunscripcion','Persona militante encargado de circunscripcion',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(5,'Encargado Departamental','Persona militante encargado departamental',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(6,'Consultor','Persona que solo consulta la lista de inscritos',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(7,'Verificador','Persona verifica, valida y depura registros',NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `rols` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `social_profiles`
+--
+
+DROP TABLE IF EXISTS `social_profiles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `social_profiles` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `social_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `social_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `usuario_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `social_profiles_social_id_unique` (`social_id`),
+  KEY `social_profiles_usuario_id_foreign` (`usuario_id`),
+  CONSTRAINT `social_profiles_usuario_id_foreign` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `social_profiles`
+--
+
+LOCK TABLES `social_profiles` WRITE;
+/*!40000 ALTER TABLE `social_profiles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `social_profiles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ubicacions`
+--
+
+DROP TABLE IF EXISTS `ubicacions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ubicacions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `latitud` double(10,7) DEFAULT NULL,
+  `longitud` double(10,7) DEFAULT NULL,
+  `lugar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `localidad_id` bigint(20) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ubicacions_localidad_id_foreign` (`localidad_id`),
+  CONSTRAINT `ubicacions_localidad_id_foreign` FOREIGN KEY (`localidad_id`) REFERENCES `localidads` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ubicacions`
+--
+
+LOCK TABLES `ubicacions` WRITE;
+/*!40000 ALTER TABLE `ubicacions` DISABLE KEYS */;
+INSERT INTO `ubicacions` VALUES (1,-19.0130978,-68.3728261,'SABAYA',154,NULL,'2021-09-10 17:39:43','2021-09-10 17:39:43');
+/*!40000 ALTER TABLE `ubicacions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cuenta` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `two_factor_secret` text COLLATE utf8mb4_unicode_ci,
+  `two_factor_recovery_codes` text COLLATE utf8mb4_unicode_ci,
+  `foto` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rol_id` bigint(20) unsigned NOT NULL,
+  `confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `confirmation_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  UNIQUE KEY `users_cuenta_unique` (`cuenta`),
+  KEY `users_rol_id_foreign` (`rol_id`),
+  CONSTRAINT `users_rol_id_foreign` FOREIGN KEY (`rol_id`) REFERENCES `rols` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'root@dirdepor.com','root23','$2y$10$97GEzer84sIUu5tZ.tmKbOJ8ETbjrkDaUDpVlpHFVtP8FGIEM88Vi',NULL,NULL,NULL,1,1,NULL,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(2,'verificador@dirdepor.com','verificador','$2y$10$NuKSdxinlJcw2RuHH2aNBul9e6FUSc1pkQc1QfH0b1hW6Le3T3CsK',NULL,NULL,NULL,7,1,NULL,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42'),(3,'consultor@dirdepor.com','consultor','$2y$10$5zdm4hpr1rzu/Km6FCBF1..ktmrgPbCKQLwyATZON1HT2uGJoyoEy',NULL,NULL,NULL,6,1,NULL,NULL,'2021-09-10 17:39:42','2021-09-10 17:39:42');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-09-10  9:54:09

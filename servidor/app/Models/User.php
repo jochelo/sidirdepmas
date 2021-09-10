@@ -66,9 +66,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function getAutorizadoAttribute() {
-        return Autorizado::where('carnet', $this->carnet)
-            ->where('expedicion_carnet', $this->expedicion_carnet)
-            ->where('extension_carnet', $this->extension_carnet)
-            ->exists();
+        $idpersona = PersonaUsuario::where('usuario_id', $this->getKey())->first()['persona_id'];
+        if ($idpersona === null && $this->confirmed) {
+            return true;
+        } else {
+            $persona = Persona::find($idpersona);
+            return Autorizado::where('carnet', $persona['carnet'])
+                ->where('expedicion_carnet', $persona['expedicion_carnet'])
+                ->where('extension_carnet', $persona['extension_carnet'])
+                ->exists();
+        }
     }
 }

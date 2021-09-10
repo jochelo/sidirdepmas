@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { AdminRoutingModule } from './admin-routing.module';
-import { AdminComponent } from './admin.component';
+import {AdminRoutingModule} from './admin-routing.module';
+import {AdminComponent} from './admin.component';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -26,13 +26,32 @@ import {StoreModule} from '@ngrx/store';
 import {adminEffects} from '../store/effects/admin.effects';
 import {adminReducers} from '../store/reducers/admin.reducer';
 import {MatMenuModule} from '@angular/material/menu';
-import { HomeComponent } from './home/home.component';
+import {HomeComponent} from './home/home.component';
+import {ValidarPersonaComponent} from './persona/validar-persona/validar-persona.component';
+import {EventoIndexComponent} from './evento/evento-index/evento-index.component';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import { DialogPersonaObservacionCreateComponent } from './persona/dialog-persona-observacion-create/dialog-persona-observacion-create.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ToastrModule} from 'ngx-toastr';
+import { DialogPersonaObservacionIndexComponent } from './persona/dialog-persona-observacion-index/dialog-persona-observacion-index.component';
+import { PersonaCreateComponent } from './persona/persona-create/persona-create.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {NgxPermissionsModule} from 'ngx-permissions';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
-    HomeComponent
+    HomeComponent,
+    ValidarPersonaComponent,
+    EventoIndexComponent,
+    DialogPersonaObservacionCreateComponent,
+    DialogPersonaObservacionIndexComponent,
+    PersonaCreateComponent,
+
   ],
   imports: [
     CommonModule,
@@ -52,13 +71,27 @@ import { HomeComponent } from './home/home.component';
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonToggleModule,
     MatMenuModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatPaginatorModule,
     NgxSpinnerModule,
     ImageCropperModule,
+    PaginationModule,
+    TooltipModule,
+    ToastrModule,
+    NgSelectModule,
+    NgxPermissionsModule.forChild(),
+  ],
+  entryComponents: [
+    DialogPersonaObservacionCreateComponent,
+    DialogPersonaObservacionIndexComponent
   ]
 })
-export class AdminModule { }
+export class AdminModule {
+}

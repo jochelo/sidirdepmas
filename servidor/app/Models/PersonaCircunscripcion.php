@@ -16,6 +16,7 @@ class PersonaCircunscripcion extends Model
     protected $fillable = [
         'fecha_inicial',
         'fecha_final',
+        'activo',
         'direccion',
         'persona_id',
         'circunscripcion_id',

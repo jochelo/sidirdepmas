@@ -1,0 +1,20 @@
+<div align="end">
+  <button (click)="onClose()" mat-icon-button size="small">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<h1 mat-dialog-title>{{data.persona.nombre_completo | uppercase}}</h1>
+<div mat-dialog-content>
+  <mat-selection-list #observaciones [multiple]="false">
+    <mat-list-option *ngFor="let observacion of data.persona.observaciones" [value]="observacion.id">
+      {{ observacion.descripcion }}
+    </mat-list-option>
+    <mat-list-option *ngIf="data.persona.observaciones?.length === 0 || data.persona.observaciones === undefined" class="text-black-50">
+      <em>No tiene observaciones</em>
+    </mat-list-option>
+  </mat-selection-list>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>ACEPTAR</button>
+</div>
+

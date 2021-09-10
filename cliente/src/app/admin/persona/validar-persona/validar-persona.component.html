@@ -1,0 +1,246 @@
+<div class="mt-2">
+  <div class="row">
+    <div align="end" class="col-12">
+      <button (click)="onBack()" mat-icon-button tooltip="Volver">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+    </div>
+  </div>
+  <h4>Lista de personas inscritas en
+    <small>{{ eventoState.evento.nombre }}</small>
+  </h4>
+  <small class="text-black-50">Validación de registros</small>
+
+  <div class="row mb-3" *ngIf="cupoInscritos !== null">
+    <div class="col-md-2 mt-2">
+      <mat-card>
+        <mat-card-title>{{ cupoInscritos.countVarones }}</mat-card-title>
+        <mat-card-subtitle>Varones Titulares</mat-card-subtitle>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-2">
+      <mat-card>
+        <mat-card-title>{{ cupoInscritos.countMujeres }}</mat-card-title>
+        <mat-card-subtitle>Mujeres Titulares</mat-card-subtitle>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-2">
+      <mat-card>
+        <mat-card-title>{{ cupoInscritos.countVaronesAdscritos }}</mat-card-title>
+        <mat-card-subtitle>Varones Adscritos</mat-card-subtitle>
+      </mat-card>
+    </div>
+    <div class="col-md-2 mt-2">
+      <mat-card>
+        <mat-card-title>{{ cupoInscritos.countMujeresAdscritos }}</mat-card-title>
+        <mat-card-subtitle>Mujeres Adscritos</mat-card-subtitle>
+      </mat-card>
+    </div>
+  </div>
+
+  <div *ngIf="personaState.loading">
+    <div class="d-flex justify-content-center">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div class="text-center">
+      <p>{{ personaState.message }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h5>Filtrado de datos</h5>
+      <form [formGroup]="searchGroup">
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Circunscripción</mat-label>
+              <mat-select (selectionChange)="onSearch()" formControlName="idcircunscripcion">
+                <mat-option [value]="null" class="text-black-50">{{ 'Limpiar selección' }}</mat-option>
+                <mat-option value="1">{{ 'C-29' }}</mat-option>
+                <mat-option value="2">{{ 'C-30' }}</mat-option>
+                <mat-option value="3">{{ 'C-31' }}</mat-option>
+                <mat-option value="4">{{ 'C-32' }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Nombre</mat-label>
+              <input (change)="onSearch()" formControlName="nombre" matInput type="search">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Carnet</mat-label>
+              <input (change)="onSearch()" formControlName="carnet" matInput type="search">
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Estado</mat-label>
+              <mat-select (selectionChange)="onSearch()" formControlName="estado">
+                <mat-option [value]="null" class="text-black-50">{{ 'Limpiar selección' }}</mat-option>
+                <mat-option value="registrado">{{ 'Registrado' }}</mat-option>
+                <mat-option value="observado">{{ 'Observado' }}</mat-option>
+                <mat-option value="rechazado">{{ 'Rechazado' }}</mat-option>
+                <mat-option value="aprobado">{{ 'Aprobado' }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div *ngFor="let persona of personaState.personas;let i = index" class="col-md-6 col-lg-4">
+      <mat-card class="mt-3">
+        <mat-card-header class="justify-content-between">
+          <mat-card-title>
+            <span class="card-index">{{ personaState.paginacion.from + i }}</span>
+            <span class="text-black-50">
+                  <img *ngIf="!persona.show" alt="" class="list-avatar mx-2"
+                       src="{{BASE_URL}}persona-foto-download/{{persona.id}}/{{ persona.foto_filename }}">
+                  <small><b>{{ ' ' + persona.nombre_completo | uppercase }}</b></small>
+                </span>
+          </mat-card-title>
+
+          <mat-card-subtitle>
+            <!--<p class="text-primary"><strong>{{ 'Cargo: ' }}</strong>{{ persona.rol_persona | uppercase }}</p>-->
+          </mat-card-subtitle>
+          <div>
+            <button (click)="onShowPersona(persona)" *ngIf="!persona.show" color="primary" mat-icon-button>
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button (click)="persona.show = false" *ngIf="persona.show" color="warn" mat-icon-button>
+              <mat-icon>visibility_off</mat-icon>
+            </button>
+          </div>
+
+        </mat-card-header>
+        <mat-card-content [collapse]="!persona.show" [isAnimated]="true" class="text-black-50 ml-3">
+          <div class="row">
+            <div class="col-8 col-lg-5 mx-auto">
+              <img alt="" class="img-fluid img-responsive img-circle"
+                   src="{{BASE_URL}}persona-foto-download/{{persona.id}}/{{ persona.foto_filename }}">
+            </div>
+            <div class="col-lg-7">
+              <p>
+                <b>{{ 'Carnet: ' }}</b>{{ persona.carnet + ' ' + persona.expedicion_carnet }} {{ persona.extension_carnet ? ('- ' + persona.extension_carnet) : '' }}
+              </p>
+              <p><b>{{ 'Circunscripcion: ' }}</b>{{ persona.circunscripcion_codigo | uppercase }}</p>
+              <p><b>{{ 'Sexo: ' }}</b>{{ persona.sexo | uppercase }}</p>
+              <p class="text-primary">
+                <b>{{ 'Año registro militancia: ' }}</b>{{ persona.anio_militancia ? persona.anio_militancia : 'No es militante'}}
+              </p>
+              <p>
+                <b>{{ 'Estado en el sistema: ' }}</b>
+                <em [class.text-danger]="persona.estado === 'rechazado'"
+                    [class.text-primary]="persona.estado === 'registrado'"
+                    [class.text-success]="persona.estado === 'aprobado'"
+                    [class.text-warning]="persona.estado === 'observado'">{{ persona.estado | uppercase }}</em>
+              </p>
+              <div *ngIf="persona.estado === 'aprobado'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Cargo</mat-label>
+                  <input (ngModelChange)="persona.change = true" [(ngModel)]="persona.cargo" [disabled]="!permisoEditar"
+                         matInput
+                         type="text">
+                  <button (click)="onSaveCargo(persona)" *ngIf="persona.change" color="primary" mat-button matSuffix
+                          tooltip="Guardar Cargo">
+                    <mat-icon>save</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="persona.estado === 'aprobado'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Observación en evento</mat-label>
+                  <input (ngModelChange)="persona.changeObservacionEvento = true"
+                         [(ngModel)]="persona.observacion_evento" [disabled]="!permisoEditar"
+                         matInput type="text">
+                  <button (click)="onSaveObservacionEvento(persona)" *ngIf="persona.changeObservacionEvento"
+                          color="primary" mat-button
+                          matSuffix tooltip="Guardar Observación">
+                    <mat-icon>save</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="persona.estado === 'aprobado'">
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Estado en evento</mat-label>
+                  <mat-select (selectionChange)="onSaveTitular(persona)" [(ngModel)]="persona.titular"
+                              [disabled]="!permisoEditar">
+                    <mat-option [value]="1">{{ 'Titular' }}</mat-option>
+                    <mat-option [value]="0">{{ 'Adscrito' }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end" class="text-black-50 ml-3">
+          <div class="btn-group">
+            <div *ngxPermissionsOnly="permisoAddObservacion" class="d-inline">
+              <button
+                (click)="onAddObservacion(persona)"
+                *ngIf="persona.estado !== 'aprobado' && persona.estado !== 'rechazado'"
+                class="text-warning"
+                mat-icon-button
+                tooltip="Añadir observación">
+                <mat-icon>feedback</mat-icon>
+              </button>
+            </div>
+            <div *ngxPermissionsOnly="permisoVerObservaciones" class="d-inline">
+              <button (click)="onShowObservacion(persona)"
+                      *ngIf="persona.estado !== 'aprobado' && persona.estado !== 'rechazado'"
+                      color="accent"
+                      mat-icon-button
+                      tooltip="Lista de Observaciones">
+                <mat-icon>speaker_notes</mat-icon>
+              </button>
+            </div>
+            <div *ngxPermissionsOnly="permisoAprobar" class="d-inline">
+              <button (click)="onAprobar(persona)"
+                      *ngIf="persona.estado !== 'aprobado' && persona.estado !== 'rechazado'"
+                      class="text-success"
+                      mat-icon-button
+                      tooltip="Aprobar">
+                <mat-icon>how_to_reg</mat-icon>
+              </button>
+            </div>
+            <div *ngxPermissionsOnly="permisoRechazar" class="d-inline">
+              <button (click)="onRechazar(persona)"
+                      *ngIf="persona.estado !== 'aprobado' && persona.estado !== 'rechazado'"
+                      color="warn"
+                      mat-icon-button
+                      tooltip="Rechazar">
+                <mat-icon>person_off</mat-icon>
+              </button>
+            </div>
+
+            <div *ngxPermissionsOnly="permisoCredenciales" class="d-inline">
+              <button (click)="onCredencial(persona)"
+                      *ngIf="persona.estado === 'aprobado'"
+                      color="primary"
+                      mat-icon-button
+                      tooltip="Imprimir credencial">
+                <mat-icon>assignment_ind</mat-icon>
+              </button>
+            </div>
+
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <mat-paginator *ngIf="personaState.paginacion !== null"
+                 [length]="personaState.paginacion.total"
+                 [pageSize]="personaState.paginacion.per_page"
+                 [pageSizeOptions]="[5, 10, 15]"
+                 (page)="onPaginate($event)">
+  </mat-paginator>
+</div>

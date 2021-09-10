@@ -1,17 +1,32 @@
 <h1 class="justify-content-center" mat-dialog-title>Confirma tu correo electrónico</h1>
-<div mat-dialog-content *ngIf="authState.usuario !== null && !data.error">
+<div mat-dialog-content *ngIf="authState.usuario !== null && data.error !== undefined && !data.error">
   Gracias por registrarse, Acabamos de enviarte un mensaje de
   confirmacion al correo <em><b>{{ authState.usuario.email }}</b></em>. Por favor ingresa a tu correo electronico y
   valida tu registro para finalizar.
   <em>Si no lo encuentras revisa en SPAM</em>
+  <br>
+  <em *ngIf="!data.agregado"><b>El cupo para el evento ya fue superado.</b></em>
 </div>
 
-<div mat-dialog-content *ngIf="authState.usuario !== null && data.error">
+<div mat-dialog-content *ngIf="authState.usuario !== null && data.error !== undefined && data.error">
   Gracias por registrarse, por favor recuerda tus credenciales registradas.
   <br>
   <b>Cuenta: </b><em>{{ authState.usuario.cuenta }}</em>
   <br>
   <b>Contraseña: </b><em>{{ 'Oculto por seguridad' }}</em>
+  <br>
+  <em *ngIf="!data.agregado"><b>el cupo para el evento ya fue superado.</b></em>
+</div>
+<div mat-dialog-content *ngIf="authState.usuario !== null && !data.agregado">
+  Gracias por registrarse, por favor espere que validemos su registro.
+  <br>
+  validaremos su registro al sistema, pero el cupo para el evento ya fue superado.
+</div>
+
+<div mat-dialog-content *ngIf="authState.usuario !== null && data.agregado">
+  Gracias por registrarse
+  <br>
+  validaremos su registro al sistema, Ademas fue registrado correctamente al evento.
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>ACEPTAR</button>

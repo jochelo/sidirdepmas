@@ -15,4 +15,8 @@ export class UbicacionService {
   getLocalidades(circunscripcionId: number): Observable<any> {
     return this.http.get(`${this.base}get-localidades-circunscripcion/${circunscripcionId}`);
   }
+
+  getDepartamentos(): Observable<any> {
+    return this.http.get(`${this.base}get-departamentos`);
+  }
 }

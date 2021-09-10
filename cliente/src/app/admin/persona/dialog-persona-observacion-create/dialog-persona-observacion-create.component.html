@@ -1,0 +1,18 @@
+<div align="end">
+  <button (click)="onClose()" mat-icon-button size="small">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<h1 mat-dialog-title>{{data.persona.nombre_completo | uppercase}}</h1>
+<form [formGroup]="dataGroup" (submit)="onSubmit()">
+  <div mat-dialog-content>
+    <p>¿Cuál es la observación?</p>
+    <mat-form-field>
+      <mat-label>Observación</mat-label>
+      <input #inputObservacion matInput formControlName="observacion">
+    </mat-form-field>
+  </div>
+</form>
+<div mat-dialog-actions align="end">
+  <button mat-button [disabled]="dataGroup.invalid" type="submit">REGISTRAR</button>
+</div>

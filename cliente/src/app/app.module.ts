@@ -50,6 +50,13 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatRadioModule} from '@angular/material/radio';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {registerLocaleData} from '@angular/common';
+import localeEsBo from '@angular/common/locales/es-BO';
+import { InformacionPersonaComponent } from './informacion-persona/informacion-persona.component';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {NgxPermissionsModule} from 'ngx-permissions';
+
+registerLocaleData(localeEsBo, 'es-Bo');
 
 @NgModule({
   declarations: [
@@ -58,7 +65,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
     RegisterComponent,
     NavComponent,
     ModalVerifyComponent,
-    ActivateAccountComponent
+    ActivateAccountComponent,
+    InformacionPersonaComponent
   ],
   imports: [
     BrowserModule,
@@ -102,14 +110,16 @@ import {NgSelectModule} from '@ng-select/ng-select';
     MomentDateModule,
     ToastrModule.forRoot(),
     SocialLoginModule,
-    NgSelectModule
+    NgSelectModule,
+    CollapseModule,
+    NgxPermissionsModule.forRoot()
   ],
   providers: [
-    MatDatepickerModule,
-    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
     {
       provide: LOCALE_ID, useValue: 'es-Bo'
     },
+    MatDatepickerModule,
+    {provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS},
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,

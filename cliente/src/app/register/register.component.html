@@ -515,12 +515,7 @@
                 </mat-form-field>
                 </div>
               <div class="col-md-6" *ngIf="personaGroup.get('circunscripcion_id').value  !== null">
-                  <!--<mat-select formControlName="localidad_id" required>
-                    <mat-option *ngFor="let localidad of localidades" [value]="localidad.id">
-                      {{ localidad.localidad }}
-                    </mat-option>
-                  </mat-select>-->
-                  <ng-select placeholder="Localidad" [items]="localidades" formControlName="localidad_id" bindLabel="localidad" bindValue="id" appendTo="body"></ng-select>
+                  <ng-select placeholder="Localidad" [items]="localidades" formControlName="localidad_id" bindLabel="localidad" bindValue="id" appendTo="body" notFoundText="Localidad no encontrada"></ng-select>
 
                   <mat-error *ngFor="let validation of validations.localidad">
                     <mat-error

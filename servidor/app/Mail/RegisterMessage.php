@@ -32,7 +32,8 @@ class RegisterMessage extends Mailable
     public function build()
     {
         return $this->markdown('emails.register-user')->with([
-            'nombre' => $this->usuario->nombres
+            'nombre' => $this->usuario->nombre_usuario,
+            'cuenta' => $this->usuario->cuenta
         ]);
     }
 }

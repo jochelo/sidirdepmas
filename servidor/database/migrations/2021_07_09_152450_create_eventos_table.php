@@ -20,10 +20,10 @@ class CreateEventosTable extends Migration
             $table->date('fecha_final');
             $table->enum('tipo', ['reunion', 'ampliado', 'congreso']);
             $table->string('nombre');
-            $table->string('descripcion');
-            $table->string('observacion');
-            $table->boolean('activo');
-            $table->string('archivo_adjunto');
+            $table->string('descripcion')->nullable();
+            $table->string('observacion')->nullable();
+            $table->boolean('activo')->default(true);
+            $table->string('archivo_adjunto')->nullable();
 
             $table->unsignedBigInteger('ubicacion_id');
 

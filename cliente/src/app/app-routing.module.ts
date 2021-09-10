@@ -4,11 +4,14 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 import {ActivateAccountComponent} from './activate-account/activate-account.component';
 import {AuthGuard} from './guard/auth.guard';
+import {InformacionPersonaComponent} from './informacion-persona/informacion-persona.component';
+import {AdminGuard} from './guard/admin.guard';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'register',
@@ -17,6 +20,10 @@ const routes: Routes = [
   {
     path: 'activate-acount/:hash',
     component: ActivateAccountComponent
+  },
+  {
+    path: 'informacion-persona/:idpersona/:idevento/:carnetTres',
+    component: InformacionPersonaComponent
   },
   {
     path: 'admin',

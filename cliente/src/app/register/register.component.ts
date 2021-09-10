@@ -43,45 +43,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild('ciAntCropper', {static: false}) ciAntCropper: ImageCropperComponent;
   @ViewChild('ciPosCropper', {static: false}) ciPosCropper: ImageCropperComponent;
 
-  departamentos = [
-    {
-      sigla: 'OR',
-      nombre: 'ORURO'
-    },
-    {
-      sigla: 'LP',
-      nombre: 'LA PAZ'
-    },
-    {
-      sigla: 'PT',
-      nombre: 'POTOSI'
-    },
-    {
-      sigla: 'CO',
-      nombre: 'COCHABAMBA'
-    },
-    {
-      sigla: 'CH',
-      nombre: 'CHUQUISACA'
-    },
-    {
-      sigla: 'TA',
-      nombre: 'TARIJA'
-    },
-    {
-      sigla: 'PA',
-      nombre: 'PANDO'
-    },
-    {
-      sigla: 'BE',
-      nombre: 'BENI'
-    },
-    {
-      sigla: 'SC',
-      nombre: 'SANTA CRUZ'
-    },
-
-  ];
+  departamentos = [];
 
   circunscripciones = [];
   localidades = [];
@@ -192,6 +154,10 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(5)]),
       confirm_password: new FormControl(null, [Validators.required]),
       base: new FormControl(document.location.href.split(this.router.url)[0])
+    });
+
+    this.ubicacionService.getDepartamentos().subscribe( (data: any) => {
+      this.departamentos = data;
     });
 
     this.circunscripcionService.getCircunscripciones().subscribe((data: any) => {
